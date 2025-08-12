@@ -1,10 +1,37 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="utf-8">
+  <!-- Include the CesiumJS JavaScript and CSS files -->
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
 </head>
 <body>
-    Hola mundo!!
+  <div id="cesiumContainer"></div>
+  <script type="module">
+    // Your access token can be found at: https://ion.cesium.com/tokens.
+    // Replace `your_access_token` with your Cesium ion access token.
+
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2M2FkMjc3Yy05MzFjLTQwMGMtODA4Ny1lOTU0MjIyY2QzZjAiLCJpZCI6MzMxMzcxLCJpYXQiOjE3NTUwNDI2MDB9.raVTJvqDSCHXu3UHm3jMRHpJHxpzpMlWv1CgC1m19pA';
+
+    // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrain: Cesium.Terrain.fromWorldTerrain(),
+    });    
+
+    // Fly the camera to Bogotá at the given longitude, latitude, and height.
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(-74.09651901044141, 4.670384438005552, 2600),
+      orientation: {
+        heading: Cesium.Math.toRadians(0.0),
+        pitch: Cesium.Math.toRadians(-15.0),
+      }
+    });
+
+    // Add Cesium OSM Buildings, a global 3D buildings layer.
+    const buildingTileset = await Cesium.createOsmBuildingsAsync();
+    viewer.scene.primitives.add(buildingTileset);   
+  </script>
+ </div>
 </body>
 </html>
